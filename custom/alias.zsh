@@ -1,6 +1,9 @@
 # edit this file
 alias editalias='vim /home/keisuke/.oh-my-zsh/custom/alias.zsh'
 
+# notes
+alias editnotes='vim ~/Documents/notes/useful_staff.md'
+alias shownotes='grip ~/Documents/notes/useful_staff.md'
 # apt-fast
 alias apt='apt-fast'
 alias update='apt-fast update'
