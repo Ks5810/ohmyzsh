@@ -1,15 +1,16 @@
-# based on af-magic.zsh-theme https://github.com/andyfleming/oh-my-zsh
+# This requires zsh shell with Oh My Zsh installed https://github.com/ohmyzsh/ohmyzsh/
+# based on af-magic.zsh-theme https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/af-magic.zsh-theme
 # and https://github.com/kurenaif/dotfiles/blob/master/fish_prompt.fish
 
 # color settings https://robotmoon.com/256-colors/
-typeset +H my_pink="$FG[218]"
 typeset +H my_blue="$FG[117]"
-typeset +H my_green="$FG[115]"
-typeset +H my_gray="$FG[237]"
-typeset +H my_yellow="$FG[186]"
-typeset +H my_purple="$FG[147]"
 typeset +H my_light_blue="$FG[153]"
+typeset +H my_gray="$FG[237]"
+typeset +H my_green="$FG[115]"
+typeset +H my_pink="$FG[218]"
+typeset +H my_purple="$FG[147]"
 typeset +H my_red="$FG[160]"
+typeset +H my_yellow="$FG[186]"
 
 # git settings
 ZSH_THEME_GIT_PROMPT_STAGED="$my_yellow*%{$reset_color%}"
@@ -20,6 +21,20 @@ ZSH_THEME_GIT_PROMPT_STASHED="$my_pink✓%{$reset_color%}"
 # virtualenv settings
 ZSH_THEME_VIRTUALENV_PREFIX=" $FG[075]["
 ZSH_THEME_VIRTUALENV_SUFFIX="]%{$reset_color%}"
+
+# dashed separator size
+function afmagic_dashes {
+    # check either virtualenv or condaenv variables
+    local python_env="${VIRTUAL_ENV:-$CONDA_DEFAULT_ENV}"
+
+    # if there is a python virtual environment and it is displayed in
+    # the prompt, account for it when returning the number of dashes
+    if [[ -n "$python_env" && "$PS1" = \(* ]]; then
+        echo $(( COLUMNS - ${#python_env} - 3 ))
+    else
+        echo $COLUMNS
+    fi
+}
 
 function __git_prompt_status() {
     [[ "$(__git_prompt_git config --get oh-my-zsh.hide-status 2>/dev/null)" = 1 ]] && return
@@ -122,7 +137,7 @@ function __git_prompt_status() {
     echo $status_prompt
 }
 
-function git_info {
+function __git_info {
     if ! __git_prompt_git rev-parse --git-dir &> /dev/null \
         || [[ "$(__git_prompt_git config --get oh-my-zsh.hide-info 2>/dev/null)" == 1 ]]; then
             return 0
@@ -135,21 +150,7 @@ function git_info {
     echo "$my_light_blue($my_purple$(git_current_branch)$my_light_blue|$git_status$my_light_blue%)"
 }
 
-# dashed separator size
-function afmagic_dashes {
-    # check either virtualenv or condaenv variables
-    local python_env="${VIRTUAL_ENV:-$CONDA_DEFAULT_ENV}"
-
-    # if there is a python virtual environment and it is displayed in
-    # the prompt, account for it when returning the number of dashes
-    if [[ -n "$python_env" && "$PS1" = \(* ]]; then
-        echo $(( COLUMNS - ${#python_env} - 3 ))
-    else
-        echo $COLUMNS
-    fi
-}
-
-function current_path {
+function __current_path {
     pwd_result=$(pwd)
     if [[ $(expr length "$pwd_result") -gt $(( COLUMNS - 30 )) ]]; then
         echo "%~"
@@ -158,16 +159,23 @@ function current_path {
     fi
 }
 
+function __remote_connection_status {
+    if [ "$ZSH_THEME_REMOTE_CONNECTION_STATUS" -eq 0 ]; then
+        return 0
+    else 
+        echo "$my_pink(remote%) "
+    fi
+}
+
 # primary prompt
 PS1='$my_gray${(l.$(afmagic_dashes)..-.)}%{$reset_color%}
-$my_light_blue╭─ $my_blue$(current_path) $(git_info) $(hg_prompt_info)
+$my_light_blue╭─ $my_blue$(__current_path) $(__git_info) $(hg_prompt_info)
 $my_light_blue╰─%(?.$my_yellow(*'\''-'\''%).$my_pink(*;-;%)) %(!.#.<) %{$reset_color%}'
 PS2='%{$fg[red]%}\ %{$reset_color%}'
 
 # right prompt: return code, virtualenv and context (user@host)
+# and show proxy connection status
 if (( $+functions[virtualenv_prompt_info] )); then
     RPS1+='$(virtualenv_prompt_info)'
 fi
-RPS1+='$my_blue%*%{$reset_color%}%'
-
-
+RPS1+='$(__remote_connection_status)$my_blue%*%{$reset_color%}%'
