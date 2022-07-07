@@ -162,7 +162,9 @@ function __current_path {
 function __remote_connection_status {
     if [ "$ZSH_THEME_REMOTE_CONNECTION_STATUS" -eq 0 ]; then
         return 0
-    else 
+    elif [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        echo "$my_pink(ssh%) "
+    else
         echo "$my_pink(remote%) "
     fi
 }
@@ -170,7 +172,7 @@ function __remote_connection_status {
 # primary prompt
 PS1='$my_gray${(l.$(afmagic_dashes)..-.)}%{$reset_color%}
 $my_light_blue╭─ $my_blue$(__current_path) $(__git_info) $(hg_prompt_info)
-$my_light_blue╰─%(?.$my_yellow(*'\''-'\''%).$my_pink(*;-;%)) %(!.#.<) %{$reset_color%}'
+$my_light_blue╰─%(?.$my_yellow(*'\''一'\''%).$my_pink(╯°◻°%)╯︵┴─┴) %(!.#.<) %{$reset_color%}'
 PS2='%{$fg[red]%}\ %{$reset_color%}'
 
 # right prompt: return code, virtualenv and context (user@host)
