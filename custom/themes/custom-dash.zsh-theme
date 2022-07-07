@@ -160,10 +160,10 @@ function __current_path {
 }
 
 function __remote_connection_status {
-    if [ "$ZSH_THEME_REMOTE_CONNECTION_STATUS" -eq 0 ]; then
-        return 0
-    elif [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
         echo "$my_pink(ssh%) "
+    elif [ "$ZSH_THEME_REMOTE_CONNECTION_STATUS" -eq 0 ]; then
+        return 0
     else
         echo "$my_pink(remote%) "
     fi
