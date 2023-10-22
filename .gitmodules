@@ -1,0 +1,24 @@
+[submodule "custom/plugins/custom/plugins/zsh-autosuggestions"]
+	path = custom/plugins/custom/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "custom/plugins/custom/plugins/fast-syntax-highlighting"]
+	path = custom/plugins/custom/plugins/fast-syntax-highlighting
+	url = git@github.com:Ks5810/fast-syntax-highlighting
+[submodule "custom/plugins/custom/plugins/zsh-completions"]
+	path = custom/plugins/custom/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions
+[submodule "custom/plugins/custom/plugins/zsh-nvm"]
+	path = custom/plugins/custom/plugins/zsh-nvm
+	url = https://github.com/lukechilds/zsh-nvm
+[submodule "custom/plugins/zsh-autosuggestions"]
+	path = custom/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "custom/plugins/fast-syntax-highlighting"]
+	path = custom/plugins/fast-syntax-highlighting
+	url = git@github.com:Ks5810/fast-syntax-highlighting
+[submodule "custom/plugins/zsh-completions"]
+	path = custom/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions
+[submodule "custom/plugins/zsh-nvm"]
+	path = custom/plugins/zsh-nvm
+	url = https://github.com/lukechilds/zsh-nvm
